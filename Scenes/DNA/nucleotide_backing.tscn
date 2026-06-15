@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://b5nrjb0o3i6ni"]
+
+[ext_resource type="Script" uid="uid://b0tmphmmqh7wh" path="res://Scripts/nucleotide_backing.gd" id="1_0vkby"]
+[ext_resource type="Texture2D" uid="uid://bwd84acf7ymlg" path="res://Assets/NucleotideBacking.png" id="1_8abgy"]
+[ext_resource type="Script" uid="uid://i6ircm2d18hy" path="res://Scripts/dna_snap_marker.gd" id="3_yo70o"]
+
+[node name="NucleotideBacking" type="Node2D" unique_id=1464379320 node_paths=PackedStringArray("right_point", "left_point", "bottom_point", "top_point")]
+script = ExtResource("1_0vkby")
+right_point = NodePath("RightPoint")
+left_point = NodePath("LeftPoint")
+bottom_point = NodePath("BottomPoint")
+top_point = NodePath("TopPoint")
+
+[node name="NucleotideBacking" type="Sprite2D" parent="." unique_id=844348577]
+texture = ExtResource("1_8abgy")
+
+[node name="RightPoint" type="Marker2D" parent="." unique_id=1782952321]
+position = Vector2(46, 0)
+
+[node name="LeftPoint" type="Marker2D" parent="." unique_id=1121180654]
+position = Vector2(-46, 0)
+
+[node name="BottomPoint" type="Marker2D" parent="." unique_id=951285593]
+position = Vector2(0, 98)
+script = ExtResource("3_yo70o")
+metadata/_custom_type_script = "uid://i6ircm2d18hy"
+
+[node name="TopPoint" type="Marker2D" parent="." unique_id=1662335133]
+position = Vector2(0, -98)
+script = ExtResource("3_yo70o")
+is_top = true
+metadata/_custom_type_script = "uid://i6ircm2d18hy"

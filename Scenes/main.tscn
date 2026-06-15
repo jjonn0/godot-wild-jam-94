@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://b6vwqni358t1t"]
+
+[ext_resource type="PackedScene" uid="uid://ckumx0euj54hi" path="res://UI/gene_editor.tscn" id="1_jjgbg"]
+
+[node name="Main" type="Node" unique_id=592642617]
+
+[node name="Managers" type="Node" parent="." unique_id=1318984044]
+
+[node name="GeneEditor" parent="." unique_id=1053353092 instance=ExtResource("1_jjgbg")]

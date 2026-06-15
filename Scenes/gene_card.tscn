@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://djo2v5a2mwa3q"]
+
+[ext_resource type="Script" uid="uid://c0pk4s2vbe2i" path="res://Scripts/gene_card.gd" id="1_mwspn"]
+[ext_resource type="Texture2D" uid="uid://dam60otaj483u" path="res://Assets/Card Backing/A-Card.png" id="2_on1f6"]
+
+[node name="GeneCard" type="Node2D" unique_id=1368041720]
+modulate = Color(0.743, 0.608, 0.99, 1)
+script = ExtResource("1_mwspn")
+
+[node name="CardBacking" type="Sprite2D" parent="." unique_id=1585305667]
+rotation = 6.2831855
+texture = ExtResource("2_on1f6")
+
+[node name="Icon" type="Sprite2D" parent="CardBacking" unique_id=1952132238]
+position = Vector2(0, 8)
+rotation = -6.2831855
+
+[node name="BottomPoint" type="Marker2D" parent="CardBacking" unique_id=1368774257]
+position = Vector2(7.343513e-06, 42)
+
+[node name="Hitbox" type="ReferenceRect" parent="." unique_id=1462045470]
+offset_left = -32.0
+offset_top = -43.0
+offset_right = 32.0
+offset_bottom = 42.0
+
+[connection signal="mouse_entered" from="Hitbox" to="." method="_on_hitbox_mouse_entered"]
+[connection signal="mouse_exited" from="Hitbox" to="." method="_on_hitbox_mouse_exited"]

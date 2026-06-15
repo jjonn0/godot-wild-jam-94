@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bxv7b1ac2nhti"]
+
+[ext_resource type="PackedScene" uid="uid://djo2v5a2mwa3q" path="res://Scenes/gene_card.tscn" id="1_2ohv3"]
+[ext_resource type="Texture2D" uid="uid://dxgfr8s84a47j" path="res://Assets/Card Icons/Syringe.png" id="2_5nrhx"]
+[ext_resource type="Texture2D" uid="uid://dodh3fsp3u4ej" path="res://Assets/Card Backing/G-Card.png" id="3_axc2e"]
+
+[node name="TestCard1" unique_id=1368041720 instance=ExtResource("1_2ohv3")]
+modulate = Color(0.99, 0.829, 0.604, 1)
+card_type = 3
+card_icon = ExtResource("2_5nrhx")
+
+[node name="CardBacking" parent="." index="0" unique_id=1585305667]
+texture = ExtResource("3_axc2e")
+
+[node name="Icon" parent="CardBacking" index="0" unique_id=1952132238]
+texture = ExtResource("2_5nrhx")
