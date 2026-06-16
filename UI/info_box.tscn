@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://cqpvqxi5d03bs"]
+
+[ext_resource type="Script" uid="uid://d2yq0mxsd5gni" path="res://Scripts/info_box.gd" id="1_6dufs"]
+
+[node name="InfoBox" type="PanelContainer" unique_id=188304121 node_paths=PackedStringArray("card_type_label", "card_title_label", "card_desc_label", "mutation_seperator", "mutation_title_label", "mutation_desc_label")]
+offset_right = 72.0
+offset_bottom = 23.0
+script = ExtResource("1_6dufs")
+card_type_label = NodePath("MarginContainer/VBoxContainer/HBoxContainer/CardType")
+card_title_label = NodePath("MarginContainer/VBoxContainer/HBoxContainer/CardTitle")
+card_desc_label = NodePath("MarginContainer/VBoxContainer/CardDesc")
+mutation_seperator = NodePath("MarginContainer/VBoxContainer/MutationSeperator")
+mutation_title_label = NodePath("MarginContainer/VBoxContainer/MutationTitle")
+mutation_desc_label = NodePath("MarginContainer/VBoxContainer/MutationDesc")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1371020487]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2051146808]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=993238723]
+layout_mode = 2
+
+[node name="CardTypeTitle" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1550792336]
+layout_mode = 2
+text = "Card Type:"
+
+[node name="CardType" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=840996572]
+layout_mode = 2
+text = "card_type"
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=839387649]
+layout_mode = 2
+
+[node name="CardTitleTitle" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=213484809]
+layout_mode = 2
+text = "Card Title:"
+
+[node name="CardTitle" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1274914617]
+layout_mode = 2
+text = "card_title"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1047148138]
+layout_mode = 2
+
+[node name="DescriptionTitle" type="Label" parent="MarginContainer/VBoxContainer" unique_id=329117826]
+layout_mode = 2
+text = "Description"
+
+[node name="CardDesc" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1206961621]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+text = "card_description"
+autowrap_mode = 3
+
+[node name="MutationSeperator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=114951595]
+layout_mode = 2
+
+[node name="MutationTitle" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1674927630]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "Mutation"
+
+[node name="MutationDesc" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1566617687]
+layout_mode = 2

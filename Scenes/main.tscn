@@ -1,9 +1,19 @@
 [gd_scene format=3 uid="uid://b6vwqni358t1t"]
 
+[ext_resource type="Script" uid="uid://xvpxrda51bh0" path="res://Scripts/card_manager.gd" id="1_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://ckumx0euj54hi" path="res://UI/gene_editor.tscn" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://dni22hpcnq68q" path="res://Scripts/music_manager.gd" id="2_8gbba"]
 
 [node name="Main" type="Node" unique_id=592642617]
 
 [node name="Managers" type="Node" parent="." unique_id=1318984044]
+
+[node name="CardManager" type="Node" parent="Managers" unique_id=390825681]
+script = ExtResource("1_bo1nx")
+card_directory_path = &"res://Scenes/Cards/"
+
+[node name="MusicManager" type="AudioStreamPlayer" parent="Managers" unique_id=944630757]
+bus = &"Music"
+script = ExtResource("2_8gbba")
 
 [node name="GeneEditor" parent="." unique_id=1053353092 instance=ExtResource("1_jjgbg")]

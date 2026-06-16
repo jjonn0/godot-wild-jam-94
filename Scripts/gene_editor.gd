@@ -1,59 +1,105 @@
 extends Control
 
-const CARD_PATH : StringName = "res://Scenes/Cards/"
+@export_category("User Settings")
+const CARD_FOLLOW_SPEED : float = 50.0
 
-@onready var card_end_box: ReferenceRect = $CardEndBox
-@onready var card_start_box: ReferenceRect = $CardStartBox
-@onready var dna_spawn_point: Marker2D = $DNASpawnPoint
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var card_spawn_delay: Timer = $CardSpawnDelay
+@export_category("Technical")
+@export var card_start_box : ReferenceRect
+@export var card_end_box : ReferenceRect
+@export var dna_spawn_point : Marker2D
+@export var max_snapping_distance : float = 100.0
+@export var start_button : Button
 
-var potential_cards : Array[PackedScene] = []
-var spawned_cards : Array[GeneCard] = []
-var dna_strand : DNAStrand
+var _snapped_cards : Array[GeneCard] = []
+## An array containing every unsnapped gene card. Used for moving cards back to the right place.
+var _unsnapped_cards : Array[GeneCard] = []
 
-func _enter_tree() -> void:
-	_load_card_scenes()
+var _held_card : GeneCard
+var _dna_strand_ref : DNAStrand
+var _closest_site_ref : DNASnapMarker
+var _can_snap_card : bool = false
+
+var _strand_full : bool = false
 
 func _ready() -> void:
-	animation_player.play("gene_editor_open")
+	spawn_cards()
+	_dna_strand_ref = DNAStrand.new()
+	add_child(_dna_strand_ref)
+	_dna_strand_ref.global_position = dna_spawn_point.global_position - _dna_strand_ref.left_point.global_position
+	GlobalNode.music_manager.play_gene_editor_music()
+	_strand_full = check_if_strand_is_full()
+	start_button.disabled = !_strand_full
 
-func _spawn_dna_strand() -> void:
-	dna_strand = DNAStrand.new()
-	dna_strand.global_position = dna_spawn_point.global_position
-	dna_strand.new_snap_marker.connect(_on_new_snap_position)
-	add_child(dna_strand)
+func _draw() -> void:
+	if _closest_site_ref and _can_snap_card and _held_card:
+		draw_line(_closest_site_ref.global_position, get_global_mouse_position(), Color(0.0, 1.0, 0.217, 1.0), 2.0)
 
-func _load_card_scenes() -> void:
-	potential_cards = []
-	var dir : DirAccess = DirAccess.open(CARD_PATH)
-	if dir:
-		for file in dir.get_files():
-			if file.ends_with(".tscn"):
-				var new_scene : PackedScene = load(CARD_PATH + file)
-				potential_cards.append(new_scene)
+func _process(delta: float) -> void:
+	if _held_card:
+		_held_card.global_position = _held_card.global_position.lerp(get_global_mouse_position(), delta * CARD_FOLLOW_SPEED)
+		_closest_site_ref = _dna_strand_ref.get_closest_free_site(_held_card)
+		if _closest_site_ref != null:
+			if _closest_site_ref.global_position.distance_to(get_global_mouse_position()) <= max_snapping_distance:
+				_held_card.flip_upside_down(_closest_site_ref.is_top)
+				_can_snap_card = true
+				
+				queue_redraw()
+			else:
+				_can_snap_card = false
+				_held_card.flip_upside_down(false)
+				queue_redraw()
+	for card in _unsnapped_cards:
+		var rect : Rect2 = card_end_box.get_rect()
+		card.global_position = Vector2(clampf(card.global_position.x, rect.position.x, rect.end.x), clampf(card.global_position.y, rect.position.y, rect.end.y))
 
-func _get_rand_position_in_rect(rect : Rect2) -> Vector2:
-	var return_position : Vector2
-	return_position.x = randf_range(rect.position.x, rect.end.x)
-	return_position.y = randf_range(rect.position.y, rect.end.y)
-	return return_position
+func _on_card_clicked(gene_card : GeneCard) -> void:
+	if _held_card:
+		return
+	_held_card = gene_card
+	
+	for pairing in _dna_strand_ref.nucleotide_pair_refs:
+		for site : DNASnapMarker in [pairing.top_point, pairing.bottom_point]:
+			if site.held_card == gene_card:
+				site.held_card = null
+	if _unsnapped_cards.has(gene_card):
+		_unsnapped_cards.erase(gene_card)
+		_snapped_cards.append(gene_card)
 
-func _spawn_new_card() -> void:
-	var new_card_scene : PackedScene = potential_cards[randi() % potential_cards.size()]
-	var new_card : GeneCard = new_card_scene.instantiate()
-	new_card.spawn_and_move(_get_rand_position_in_rect(card_start_box.get_rect()), _get_rand_position_in_rect(card_end_box.get_rect()))
-	new_card.global_position = card_start_box.get_rect().end
-	add_child(new_card)
-	new_card.rotate_card(randf_range(0.0, 360.0))
-	spawned_cards.append(new_card)
-
-func _on_card_spawn_delay_timeout() -> void:
-	if spawned_cards.size() < GlobalNode.gene_cards_drawn:
-		_spawn_new_card()
+func _on_card_released(gene_card : GeneCard) -> void:
+	if gene_card != _held_card:
+		return
+	_held_card = null
+	if _can_snap_card and _closest_site_ref != null:
+		_closest_site_ref.held_card = gene_card
+		gene_card.flip_upside_down(_closest_site_ref.is_top)
+		gene_card.snap_to_position(_closest_site_ref.global_position)
+		if _unsnapped_cards.has(gene_card):
+			_unsnapped_cards.erase(gene_card)
 	else:
-		card_spawn_delay.stop()
+		gene_card.global_position = get_global_mouse_position()
+		if _snapped_cards.has(gene_card):
+			_snapped_cards.erase(gene_card)
+			_unsnapped_cards.append(gene_card)
+	_strand_full = check_if_strand_is_full()
+	start_button.disabled = !_strand_full
 
-func _on_new_snap_position(pos : Vector2, is_top : bool) -> void:
-	GlobalNode.held_card.snap_to(pos)
-	GlobalNode.held_card.flip_card(is_top)
+func spawn_cards() -> void:
+	var card_array : Array[GeneCard] = GlobalNode.card_manager.get_cards()
+	for card in card_array:
+		card.card_clicked.connect(_on_card_clicked)
+		card.card_released.connect(_on_card_released)
+		card.global_position = get_rand_pos_in_rect(card_end_box)
+		add_child(card)
+		_unsnapped_cards.append(card)
+
+func get_rand_pos_in_rect(reference_rect : ReferenceRect) -> Vector2:
+	var return_vector : Vector2
+	var rect : Rect2 = reference_rect.get_rect()
+	return_vector.x = randf_range(rect.position.x, rect.end.x)
+	return_vector.y = randf_range(rect.position.y, rect.end.y)
+	return return_vector
+
+func check_if_strand_is_full() -> bool:
+	if _snapped_cards.size() == GlobalNode.dna_strand_pairs * 2:
+		return true
+	return false

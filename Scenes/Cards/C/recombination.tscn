@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dot1fod33kils"]
+
+[ext_resource type="PackedScene" uid="uid://djo2v5a2mwa3q" path="res://Scenes/gene_card.tscn" id="1_6mfjf"]
+[ext_resource type="Texture2D" uid="uid://7vq1hv65kba3" path="res://Assets/Card Icons/Plus-2.png" id="2_20r6t"]
+[ext_resource type="Texture2D" uid="uid://dis0vc2l4vji1" path="res://Assets/Card Backing/C-Card.png" id="3_vspah"]
+
+[node name="GeneCard" unique_id=1368041720 instance=ExtResource("1_6mfjf")]
+card_type = 1
+icon = ExtResource("2_20r6t")
+card_title = "Recombination"
+card_desc = "Apply the effect of the card to the right twice."
+
+[node name="CardBacking" parent="." index="0" unique_id=1585305667]
+modulate = Color(0.604, 0.99, 0.649, 1)
+texture = ExtResource("3_vspah")
+
+[node name="Icon" parent="CardBacking" index="0" unique_id=1952132238]
+texture = ExtResource("2_20r6t")

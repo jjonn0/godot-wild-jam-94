@@ -14,6 +14,10 @@ config/name="Project Mutation"
 run/main_scene="uid://b6vwqni358t1t"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
+[audio]
+
+buses/default_bus_layout="uid://dnhr3i3jnq8pu"
+
 [autoload]
 
 GlobalNode="*uid://4kmuf6disf6f"
@@ -50,3 +54,5 @@ primary_interaction={
 
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true

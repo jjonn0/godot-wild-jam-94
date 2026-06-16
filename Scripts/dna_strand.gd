@@ -1,59 +1,42 @@
 class_name DNAStrand extends Node2D
 
-signal new_snap_marker(pos : Vector2, is_top : bool)
-
 const NUCLEOTIDE_BACKING = preload("uid://b5nrjb0o3i6ni")
-const SLIDE_EASE_VALUE : float = -2.0
-const SLIDE_EASE_STEPS : int = 60
+const SLIDE_WEIGHT : float = 15.0
 
-var nucleotide_pairings : Array[NucleotideBacking] = []
-
-# Strand spawning vars
-var _start_position : Vector2
-var _leftmost_position : Vector2
-# Nucleotide line hint vars
-var _origin_position : Vector2
-var _target_position : Vector2
-
-var _slide_ease_step : int = 0
+var nucleotide_pair_refs : Array[NucleotideBacking] = []
+var left_point : Marker2D
+var right_point : Marker2D
 
 func _ready() -> void:
-	_start_position = global_position
-	_create_dna_strand()
+	_generate_dna_strand()
 
-func _physics_process(_delta: float) -> void:
-	if _slide_ease_step < SLIDE_EASE_STEPS:
-		global_position.x = (_start_position.x - _leftmost_position.x) * ease(float(_slide_ease_step) / float(SLIDE_EASE_STEPS), SLIDE_EASE_VALUE)
-		_slide_ease_step += 1
-	if GlobalNode.is_card_picked_up:
-		calculate_closest_free_connection(get_global_mouse_position())
-	queue_redraw()
-
-func _draw() -> void:
-	if GlobalNode.is_card_picked_up:
-		draw_line(_origin_position - global_position, _target_position - global_position, Color(0.914, 0.0, 0.291, 1.0), 2.0)
-
-func _create_dna_strand() -> void:
-	for slot_pairs in range(GlobalNode.max_pairs_in_strand):
-		var new_pair : NucleotideBacking = NUCLEOTIDE_BACKING.instantiate()
-		if nucleotide_pairings.size() == 0:
-			new_pair.global_position = global_position - new_pair.right_point.global_position
+func _generate_dna_strand() -> void:
+	var last_pair : NucleotideBacking = null
+	for nucleotide_pair in GlobalNode.dna_strand_pairs:
+		var pair : NucleotideBacking = NUCLEOTIDE_BACKING.instantiate()
+		if last_pair == null:
+			pair.global_position = global_position - pair.right_point.global_position
 		else:
-			new_pair.global_position = nucleotide_pairings.back().left_point.global_position - new_pair.right_point.global_position - global_position
-		add_child(new_pair)
-		nucleotide_pairings.append(new_pair)
-	_leftmost_position = nucleotide_pairings.back().left_point.global_position
+			pair.global_position = last_pair.left_point.global_position - pair.right_point.global_position
+		last_pair = pair
+		add_child(pair)
+		nucleotide_pair_refs.append(pair)
+	left_point = nucleotide_pair_refs.back().left_point
+	right_point = nucleotide_pair_refs.front().right_point
 
-func calculate_closest_free_connection(pos : Vector2) -> void:
-	var sites : Array[DNASnapMarker] = []
-	var is_top : bool = false
-	for pairing in nucleotide_pairings:
-		sites.append_array([pairing.top_point, pairing.bottom_point])
-	var distance : float = sites[0].global_position.distance_to(pos)
-	for site in sites:
-		if site.global_position.distance_to(pos) <= distance:
-			distance = site.global_position.distance_to(pos)
-			_target_position = site.global_position
-			is_top = site.is_top
-	_origin_position = pos
-	new_snap_marker.emit(_target_position, is_top)
+func get_closest_free_site(gene_card : GeneCard) -> DNASnapMarker:
+	var pos : Vector2 = gene_card.global_position
+	var free_sites : Array[DNASnapMarker] = []
+	for pairing in nucleotide_pair_refs:
+		for site : DNASnapMarker in [pairing.top_point, pairing.bottom_point]:
+			if site.held_card == null and site.current_accepted_types.has(gene_card.card_type):
+				free_sites.append(site)
+	if free_sites.size() == 0:
+		return null
+	var closest_site : DNASnapMarker = free_sites[0]
+	var closest_dist : float = free_sites[0].global_position.distance_to(pos)
+	for site in free_sites:
+		if site.global_position.distance_to(pos) <= closest_dist:
+			closest_site = site
+			closest_dist = site.global_position.distance_to(pos)
+	return closest_site
