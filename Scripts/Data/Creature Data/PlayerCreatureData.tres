@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CreatureData" format=3 uid="uid://eudcgf4f4f2w"]
+
+[ext_resource type="Script" uid="uid://bats42fdy512l" path="res://Scripts/Data/Creature Data/creature_data.gd" id="1_wwole"]
+
+[resource]
+script = ExtResource("1_wwole")
+start_health = 100.0
+damage_range = Vector2(10, 15)
+metadata/_custom_type_script = "uid://bats42fdy512l"

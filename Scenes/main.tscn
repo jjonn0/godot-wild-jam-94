@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://b6vwqni358t1t"]
 
-[ext_resource type="Script" uid="uid://xvpxrda51bh0" path="res://Scripts/card_manager.gd" id="1_bo1nx"]
+[ext_resource type="Script" uid="uid://xvpxrda51bh0" path="res://Scripts/Classes/card_manager.gd" id="1_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://ckumx0euj54hi" path="res://UI/gene_editor.tscn" id="1_jjgbg"]
-[ext_resource type="Script" uid="uid://dni22hpcnq68q" path="res://Scripts/music_manager.gd" id="2_8gbba"]
+[ext_resource type="Script" uid="uid://dni22hpcnq68q" path="res://Scripts/Managers/music_manager.gd" id="2_8gbba"]
 
 [node name="Main" type="Node" unique_id=592642617]
 

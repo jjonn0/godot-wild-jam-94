@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://b2216im2iurx5"]
+[gd_scene format=3 uid="uid://bwm6cmvhh1ueh"]
 
 [ext_resource type="PackedScene" uid="uid://djo2v5a2mwa3q" path="res://Scenes/gene_card.tscn" id="1_yi1ej"]
 [ext_resource type="Texture2D" uid="uid://cdd27kxtakhu3" path="res://Assets/Card Icons/Pill-0001.png" id="2_kwx4p"]
@@ -7,8 +7,6 @@
 [node name="GeneCard" unique_id=1368041720 instance=ExtResource("1_yi1ej")]
 card_type = 2
 icon = ExtResource("2_kwx4p")
-card_title = "N/A"
-card_desc = "N/A"
 
 [node name="CardBacking" parent="." index="0" unique_id=1585305667]
 modulate = Color(0.99, 0.829, 0.604, 1)

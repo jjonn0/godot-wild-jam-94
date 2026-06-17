@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://b5nrjb0o3i6ni"]
 
-[ext_resource type="Script" uid="uid://b0tmphmmqh7wh" path="res://Scripts/nucleotide_backing.gd" id="1_0vkby"]
+[ext_resource type="Script" uid="uid://b0tmphmmqh7wh" path="res://Scripts/Classes/nucleotide_backing.gd" id="1_0vkby"]
 [ext_resource type="Texture2D" uid="uid://bwd84acf7ymlg" path="res://Assets/NucleotideBacking.png" id="1_8abgy"]
-[ext_resource type="Script" uid="uid://i6ircm2d18hy" path="res://Scripts/dna_snap_marker.gd" id="3_yo70o"]
+[ext_resource type="Script" uid="uid://i6ircm2d18hy" path="res://Scripts/Classes/dna_snap_marker.gd" id="3_yo70o"]
 
 [node name="NucleotideBacking" type="Node2D" unique_id=1464379320 node_paths=PackedStringArray("right_point", "left_point", "bottom_point", "top_point")]
 script = ExtResource("1_0vkby")

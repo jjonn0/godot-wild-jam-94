@@ -9,11 +9,14 @@ const C_CARD = preload("uid://dis0vc2l4vji1")
 const G_CARD = preload("uid://dodh3fsp3u4ej")
 const T_CARD = preload("uid://cr647g6b8vnex")
 
+const HOVER_SIZE : float = 1.05
+
 @onready var card_sprite: Sprite2D = $CardBacking
 @onready var icon_sprite: Sprite2D = $CardBacking/Icon
 @onready var bottom_point: Marker2D = $CardBacking/BottomPoint
 @onready var info_box: PanelContainer = $InfoBox
 @onready var hitbox: ReferenceRect = $Hitbox
+@export var card_script : CardScript
 
 @export var card_type : GlobalNode.CARD_TYPE:
 	set(value):
@@ -46,6 +49,9 @@ var _is_mouse_hovered : bool = false
 var _is_mouse_clicked : bool = false
 ## Whether or not the card should be upside down.
 @export var _upside_down : bool = false
+## The scaling the card will lerp to.
+var _target_scaling : Vector2 = scale
+var _scale_speed : float = 1.0
 
 #region Animation vars
 const CARD_ROTATION_STEPS : int = 50
@@ -59,7 +65,7 @@ func _ready() -> void:
 		info_box.hide()
 		info_box.set_information(card_type, card_title, card_desc)
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if not Engine.is_editor_hint():
 		if _is_mouse_hovered:
 			info_box.global_position.y = get_global_mouse_position().y
@@ -79,15 +85,19 @@ func _process(_delta: float) -> void:
 	icon_sprite.rotation_degrees = -card_sprite.rotation_degrees
 	if card_rotation_step < CARD_ROTATION_STEPS:
 		card_rotation_step += 1
+	if scale != _target_scaling:
+		scale = scale.lerp(_target_scaling, delta * _scale_speed)
 
 func _on_hitbox_mouse_entered() -> void:
 	_is_mouse_hovered = true
 	top_level = true
+	scale_card(Vector2.ONE * HOVER_SIZE, 50.0)
 	info_box.show()
 
 func _on_hitbox_mouse_exited() -> void:
 	_is_mouse_hovered = false
 	top_level = false
+	scale_card(Vector2.ONE, 50.0)
 	info_box.hide()
 
 func snap_to_position(pos : Vector2) -> void:
@@ -100,3 +110,11 @@ func flip_upside_down(is_upside_down : bool) -> void:
 	if _upside_down != is_upside_down:
 		_upside_down = is_upside_down
 		card_rotation_step = 0
+
+func scale_card(target_scaling : Vector2, scaling_speed : float) -> void:
+	_target_scaling = target_scaling
+	_scale_speed = scaling_speed
+
+func bounce_card(target_scaling : Vector2, scaling_speed : float) -> void:
+	scale = target_scaling
+	scale_card(Vector2.ONE, scaling_speed)

@@ -1,25 +1,28 @@
 extends Control
 
-@export_category("User Settings")
 const CARD_FOLLOW_SPEED : float = 50.0
+const DNA_ARROW = preload("uid://dle3cxu2w2cy1")
 
 @export_category("Technical")
 @export var card_start_box : ReferenceRect
 @export var card_end_box : ReferenceRect
 @export var dna_spawn_point : Marker2D
-@export var max_snapping_distance : float = 100.0
+@export var max_snapping_distance : float = 50.0
 @export var start_button : Button
 
 var _snapped_cards : Array[GeneCard] = []
 ## An array containing every unsnapped gene card. Used for moving cards back to the right place.
 var _unsnapped_cards : Array[GeneCard] = []
 
+# Card holding/snapping
 var _held_card : GeneCard
 var _dna_strand_ref : DNAStrand
 var _closest_site_ref : DNASnapMarker
 var _can_snap_card : bool = false
 
+# Checks
 var _strand_full : bool = false
+var _awaiting_transition : bool = false
 
 func _ready() -> void:
 	spawn_cards()
@@ -35,6 +38,8 @@ func _draw() -> void:
 		draw_line(_closest_site_ref.global_position, get_global_mouse_position(), Color(0.0, 1.0, 0.217, 1.0), 2.0)
 
 func _process(delta: float) -> void:
+	if _awaiting_transition:
+		return
 	if _held_card:
 		_held_card.global_position = _held_card.global_position.lerp(get_global_mouse_position(), delta * CARD_FOLLOW_SPEED)
 		_closest_site_ref = _dna_strand_ref.get_closest_free_site(_held_card)
@@ -53,6 +58,8 @@ func _process(delta: float) -> void:
 		card.global_position = Vector2(clampf(card.global_position.x, rect.position.x, rect.end.x), clampf(card.global_position.y, rect.position.y, rect.end.y))
 
 func _on_card_clicked(gene_card : GeneCard) -> void:
+	if _awaiting_transition:
+		return
 	if _held_card:
 		return
 	_held_card = gene_card
@@ -66,6 +73,8 @@ func _on_card_clicked(gene_card : GeneCard) -> void:
 		_snapped_cards.append(gene_card)
 
 func _on_card_released(gene_card : GeneCard) -> void:
+	if _awaiting_transition:
+		return
 	if gene_card != _held_card:
 		return
 	_held_card = null
@@ -103,3 +112,27 @@ func check_if_strand_is_full() -> bool:
 	if _snapped_cards.size() == GlobalNode.dna_strand_pairs * 2:
 		return true
 	return false
+
+func _on_start_button_pressed() -> void:
+	_awaiting_transition = true
+	var new_executioner : CardExecutioner = CardExecutioner.new()
+	var execution_list : Array[CardScript] = []
+	add_child(new_executioner)
+	for pair : NucleotideBacking in _dna_strand_ref.nucleotide_pair_refs:
+		execution_list.append(pair.top_point.held_card.card_script)
+	for pair : NucleotideBacking in _dna_strand_ref.nucleotide_pair_refs:
+		execution_list.append(pair.bottom_point.held_card.card_script)
+	new_executioner.set_execution_list(execution_list)
+	new_executioner.run_scripts()
+	
+	var result : Array[CardScript] = new_executioner.get_result()
+	var cards : Array[GeneCard] = []
+	for script in result:
+		for card in _snapped_cards:
+			if card.card_script == script:
+				cards.append(card)
+	var dna_arrow : Sprite2D = DNA_ARROW.instantiate()
+	dna_arrow.cards = cards
+	add_child(dna_arrow)
+	dna_arrow.start_animation()
+	

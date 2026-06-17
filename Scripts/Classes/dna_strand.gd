@@ -17,12 +17,12 @@ func _generate_dna_strand() -> void:
 		if last_pair == null:
 			pair.global_position = global_position - pair.right_point.global_position
 		else:
-			pair.global_position = last_pair.left_point.global_position - pair.right_point.global_position
+			pair.global_position = last_pair.right_point.global_position + pair.right_point.global_position
 		last_pair = pair
 		add_child(pair)
 		nucleotide_pair_refs.append(pair)
-	left_point = nucleotide_pair_refs.back().left_point
-	right_point = nucleotide_pair_refs.front().right_point
+	left_point = nucleotide_pair_refs.front().left_point
+	right_point = nucleotide_pair_refs.back().right_point
 
 func get_closest_free_site(gene_card : GeneCard) -> DNASnapMarker:
 	var pos : Vector2 = gene_card.global_position

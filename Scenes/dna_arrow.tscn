@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://dle3cxu2w2cy1"]
+
+[ext_resource type="Script" uid="uid://bq7o4bwnguukm" path="res://Scripts/dna_arrow.gd" id="1_5vsq4"]
+[ext_resource type="Texture2D" uid="uid://mp71lceywkql" path="res://Assets/DNA_Arrow.png" id="1_dnex7"]
+
+[node name="DNAArrow" type="Sprite2D" unique_id=20802084]
+top_level = true
+z_index = 10
+texture = ExtResource("1_dnex7")
+offset = Vector2(0, -12)
+script = ExtResource("1_5vsq4")
+
+[node name="AnimationTimer" type="Timer" parent="." unique_id=1159538746]
+one_shot = true
+
+[connection signal="timeout" from="AnimationTimer" to="." method="_on_animation_timer_timeout"]

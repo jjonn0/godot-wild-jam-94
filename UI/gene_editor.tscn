@@ -36,7 +36,8 @@ script = ExtResource("1_rkxg8")
 card_start_box = NodePath("CardStartBox")
 card_end_box = NodePath("CardEndBox")
 dna_spawn_point = NodePath("DNASpawnPoint")
-start_button = NodePath("MarginContainer/Button")
+max_snapping_distance = 150.0
+start_button = NodePath("MarginContainer/StartButton")
 
 [node name="CardEndBox" type="ReferenceRect" parent="." unique_id=1895368688]
 layout_mode = 0
@@ -71,8 +72,10 @@ grow_vertical = 0
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 10
 
-[node name="Button" type="Button" parent="MarginContainer" unique_id=2041283483]
+[node name="StartButton" type="Button" parent="MarginContainer" unique_id=2041283483]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Start"
+
+[connection signal="pressed" from="MarginContainer/StartButton" to="." method="_on_start_button_pressed"]

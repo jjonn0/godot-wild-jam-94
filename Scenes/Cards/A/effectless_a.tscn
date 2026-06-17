@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cgcxsjo8gdprk"]
+
+[ext_resource type="PackedScene" uid="uid://djo2v5a2mwa3q" path="res://Scenes/gene_card.tscn" id="1_t6olo"]
+[ext_resource type="Texture2D" uid="uid://cjbyd5qb4g0fn" path="res://Assets/Card Icons/Cancel.png" id="2_sqn10"]
+
+[node name="GeneCard" unique_id=1368041720 instance=ExtResource("1_t6olo")]
+card_title = "Effectless"
+card_desc = "This card has no effect."
+
+[node name="Icon" parent="CardBacking" parent_id_path=PackedInt32Array(1585305667) index="0" unique_id=1952132238]
+texture = ExtResource("2_sqn10")
