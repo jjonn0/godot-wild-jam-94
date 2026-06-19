@@ -10,7 +10,7 @@ card_script = NodePath("DNADamageScript")
 card_type = 3
 icon = ExtResource("1_q8kk4")
 card_title = "DNA Damage"
-card_desc = "Chooses a random card (exlcuding itself) to disable."
+card_desc = "Chooses a random card (exlcuding itself) to disable permanently."
 
 [node name="CardBacking" parent="." index="0" unique_id=1585305667]
 modulate = Color(0.604, 0.791, 0.99, 1)

@@ -1,0 +1,24 @@
+[gd_resource type="Theme" format=3 uid="uid://haw8tfhwsl4v"]
+
+[ext_resource type="FontFile" uid="uid://cgm0ajvqiti4l" path="res://Assets/Fonts/Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf" id="1_e7bfs"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e7bfs"]
+bg_color = Color(0.4, 0.4, 0.4, 1)
+border_width_left = 3
+border_width_top = 2
+border_width_right = 3
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+expand_margin_left = 3.0
+expand_margin_top = 2.0
+expand_margin_right = 3.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3taad"]
+bg_color = Color(0.33538887, 0.7373294, 0.41822335, 1)
+
+[resource]
+default_font = ExtResource("1_e7bfs")
+HealthBar/base_type = &"ProgressBar"
+HealthBar/styles/background = SubResource("StyleBoxFlat_e7bfs")
+HealthBar/styles/fill = SubResource("StyleBoxFlat_3taad")

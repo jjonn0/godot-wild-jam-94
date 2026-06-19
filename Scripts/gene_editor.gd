@@ -7,13 +7,14 @@ const DNA_ARROW = preload("uid://dle3cxu2w2cy1")
 @export var card_start_box : ReferenceRect
 @export var card_end_box : ReferenceRect
 @export var dna_spawn_point : Marker2D
-@export var max_snapping_distance : float = 50.0
+@export var max_snapping_distance : float = 100.0
 @export var start_button : Button
 
 var _snapped_cards : Array[GeneCard] = []
 ## An array containing every unsnapped gene card. Used for moving cards back to the right place.
 var _unsnapped_cards : Array[GeneCard] = []
 var _dna_arrow : Sprite2D
+var _card_executioner : CardExecutioner
 
 # Card holding/snapping
 var _held_card : GeneCard
@@ -24,6 +25,7 @@ var _can_snap_card : bool = false
 # Checks
 var _strand_full : bool = false
 var _awaiting_transition : bool = false
+var _done_executing_cards : bool = false
 
 ## Called everytime the node enters the tree
 func _enter_tree() -> void:
@@ -33,10 +35,11 @@ func _enter_tree() -> void:
 	_strand_full = check_if_strand_is_full()
 	start_button.disabled = !_strand_full
 	
-	if _awaiting_transition:
-		_awaiting_transition = false
+	_awaiting_transition = false
+	_done_executing_cards = false
 	if _dna_arrow:
 		_dna_arrow.queue_free()
+	GlobalNode.game_data.scale_creature(GlobalNode.game_data.get_enemy_creature_data())
 
 ## Called only once when the node enters the tree.
 func _ready() -> void:
@@ -126,24 +129,34 @@ func check_if_strand_is_full() -> bool:
 
 func _on_start_button_pressed() -> void:
 	_awaiting_transition = true
-	var new_executioner : CardExecutioner = CardExecutioner.new()
+	if not _card_executioner:
+		_card_executioner = CardExecutioner.new()
+		_card_executioner.on_all_cards_executed.connect(_on_all_cards_executed)
+		add_child(_card_executioner)
 	var execution_list : Array[CardScript] = []
-	add_child(new_executioner)
+	
 	for pair : NucleotideBacking in _dna_strand_ref.nucleotide_pair_refs:
 		execution_list.append(pair.top_point.held_card.card_script)
 	for pair : NucleotideBacking in _dna_strand_ref.nucleotide_pair_refs:
 		execution_list.append(pair.bottom_point.held_card.card_script)
-	new_executioner.set_execution_list(execution_list)
-	new_executioner.run_scripts()
+	_card_executioner.set_execution_list(execution_list)
 	
-	var result : Array[CardScript] = new_executioner.get_result()
-	var cards : Array[GeneCard] = []
-	for script in result:
-		for card in GlobalNode.dna_cards:
-			if card.card_script == script:
-				cards.append(card)
 	_dna_arrow = DNA_ARROW.instantiate()
-	_dna_arrow.cards = cards
 	add_child(_dna_arrow)
-	_dna_arrow.start_animation()
+	_dna_arrow.animation_timer.timeout.connect(_iterate_on_next)
+	_iterate_on_next()
+
+func _iterate_on_next() -> void:
+	var card_script : CardScript = _card_executioner.run_iteration()
+	for card in _snapped_cards:
+		if card.card_script == card_script:
+			_dna_arrow.update_next_card(card)
+			break
+
+func _on_all_cards_executed() -> void:
+	_dna_arrow.queue_free()
+	for unused_card in _unsnapped_cards:
+		unused_card.queue_free()
+	_unsnapped_cards.clear()
 	GlobalNode.gene_editor = self
+	GlobalNode.transition_manager.transition_to_fight_scene()

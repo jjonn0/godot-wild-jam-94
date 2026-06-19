@@ -20,7 +20,6 @@ func _ready() -> void:
 	player_creature_ref = instantiate_new_creature(GlobalNode.game_data.get_player_creature_data())
 	player_creature_ref.player_owned = true
 	enemy_creature_ref = instantiate_new_creature(GlobalNode.game_data.get_enemy_creature_data())
-	scale_creature(GlobalNode.game_data.get_enemy_creature_data())
 	enemy_creature_ref.player_owned = false
 	player_creature_follow.add_child(player_creature_ref)
 	enemy_creature_follow.add_child(enemy_creature_ref)
@@ -63,13 +62,6 @@ func stop_fight() -> void:
 	player_creature_ref.state_machine.process_mode = Node.PROCESS_MODE_DISABLED
 	enemy_creature_ref.state_machine.process_mode = Node.PROCESS_MODE_DISABLED
 	GlobalNode.transition_manager.transition_to_gene_editor()
-
-func scale_creature(creature_data : CreatureData) -> void:
-	creature_data.reset()
-	var difficulty_float : float = GlobalNode.game_data.get_current_difficulty_float()
-	creature_data.start_health *= difficulty_float
-	creature_data.damage_range *= difficulty_float
-	creature_data.attack_speed /= difficulty_float * 0.8
 
 func _on_win_decide_windup_timeout() -> void:
 	stop_fight()

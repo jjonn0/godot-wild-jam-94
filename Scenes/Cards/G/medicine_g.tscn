@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://bwm6cmvhh1ueh"]
+
+[ext_resource type="PackedScene" uid="uid://djo2v5a2mwa3q" path="res://Scenes/Cards/gene_card.tscn" id="1_bmta1"]
+[ext_resource type="Texture2D" uid="uid://cdd27kxtakhu3" path="res://Assets/Card Icons/Pill-0001.png" id="2_qlivo"]
+[ext_resource type="Texture2D" uid="uid://dodh3fsp3u4ej" path="res://Assets/Card Backing/G-Card.png" id="3_baw6k"]
+[ext_resource type="Script" uid="uid://dsjeqoovemexm" path="res://Scripts/Card Scripts/medicine_script.gd" id="4_qlivo"]
+
+[node name="GeneCard" unique_id=1368041720 node_paths=PackedStringArray("card_script") instance=ExtResource("1_bmta1")]
+card_script = NodePath("MedicineScript")
+card_type = 2
+icon = ExtResource("2_qlivo")
+card_title = "Medicine"
+card_desc = "Creature gains 10% of its maximum health for one round."
+
+[node name="CardBacking" parent="." index="0" unique_id=1585305667]
+modulate = Color(0.99, 0.829, 0.604, 1)
+texture = ExtResource("3_baw6k")
+
+[node name="Icon" parent="CardBacking" index="0" unique_id=1952132238]
+texture = ExtResource("2_qlivo")
+
+[node name="MedicineScript" type="Node" parent="." index="3" unique_id=224968538]
+script = ExtResource("4_qlivo")
+metadata/_custom_type_script = "uid://dsjeqoovemexm"

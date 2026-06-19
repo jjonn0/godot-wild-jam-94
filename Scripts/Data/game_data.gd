@@ -62,3 +62,10 @@ func scale_difficulty() -> void:
 			_current_difficulty_float *= MEDIUM_SCALING
 		Difficulties.HARD:
 			_current_difficulty_float *= HARD_SCALING
+
+func scale_creature(creature_data : CreatureData) -> void:
+	var difficulty_float : float = _current_difficulty_float
+	creature_data.start_health *= difficulty_float
+	creature_data.damage_range *= difficulty_float
+	creature_data.attack_speed /= difficulty_float * 0.8
+	creature_data.reset()

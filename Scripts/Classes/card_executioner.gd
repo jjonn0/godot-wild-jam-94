@@ -1,5 +1,7 @@
 class_name CardExecutioner extends Node
 
+signal on_all_cards_executed()
+
 var scripts : Array[CardScript] = []
 var execution_order : Array[CardScript] = []
 var _exe_index : int = 0
@@ -14,15 +16,26 @@ func set_execution_list(new_scripts : Array[CardScript]) -> void:
 				script.on_disable_one_random_card : _on_disable_one_random_card
 			}
 			for key : Signal in signal_function_dictionary:
-				key.connect(signal_function_dictionary[key])
+				if not key.is_connected(signal_function_dictionary[key]):
+					key.connect(signal_function_dictionary[key])
 
-func run_scripts() -> void:
+## Runs all scripts in one frame.
+func run_all() -> void:
 	while _exe_index < execution_order.size():
-		var card_script : CardScript = execution_order[_exe_index]
+		run_iteration()
+
+## Runs one script at a time, returning the card script that got executed.
+func run_iteration() -> CardScript:
+	var card_script : CardScript
+	if _exe_index < execution_order.size():
+		card_script = execution_order[_exe_index]
 		if card_script != null:
 			if not card_script.disabled:
 				card_script.on_activation()
 		_exe_index += 1
+	else:
+		on_all_cards_executed.emit()
+	return card_script
 
 func get_result() -> Array[CardScript]:
 	return execution_order

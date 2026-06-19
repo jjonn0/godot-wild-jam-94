@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://c0rmbhmbnqg2w"]
+
+[ext_resource type="Script" uid="uid://cdath3gskxqea" path="res://Scripts/stat_list.gd" id="1_8ydl7"]
+[ext_resource type="Theme" uid="uid://haw8tfhwsl4v" path="res://default_theme.tres" id="1_n34ol"]
+[ext_resource type="LabelSettings" uid="uid://bh4ugh7u0eisd" path="res://stat_label_settings.tres" id="3_sxrw2"]
+
+[node name="StatList" type="VBoxContainer" unique_id=1523538723]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_8ydl7")
+
+[node name="HealthStats" type="HBoxContainer" parent="." unique_id=830015139]
+layout_mode = 2
+
+[node name="HealthLabel" type="Label" parent="HealthStats" unique_id=283677478]
+layout_mode = 2
+theme = ExtResource("1_n34ol")
+text = "Max Health:"
+label_settings = ExtResource("3_sxrw2")
+
+[node name="HealthValue" type="Label" parent="HealthStats" unique_id=1789760023]
+layout_mode = 2
+theme = ExtResource("1_n34ol")
+label_settings = ExtResource("3_sxrw2")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=913532700]
+layout_mode = 2
+
+[node name="AttackRangeLabel" type="Label" parent="HBoxContainer2" unique_id=295193648]
+layout_mode = 2
+theme = ExtResource("1_n34ol")
+text = "Attack Range:"
+label_settings = ExtResource("3_sxrw2")
+
+[node name="AttackRangeValues" type="Label" parent="HBoxContainer2" unique_id=750437541]
+layout_mode = 2
+theme = ExtResource("1_n34ol")
+label_settings = ExtResource("3_sxrw2")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="." unique_id=397693422]
+layout_mode = 2
+
+[node name="AttackSpeedLabel" type="Label" parent="HBoxContainer3" unique_id=265163762]
+layout_mode = 2
+theme = ExtResource("1_n34ol")
+text = "Attack Speed:"
+label_settings = ExtResource("3_sxrw2")
+
+[node name="AttackSpeedValue" type="Label" parent="HBoxContainer3" unique_id=324028546]
+layout_mode = 2
+theme = ExtResource("1_n34ol")
+label_settings = ExtResource("3_sxrw2")

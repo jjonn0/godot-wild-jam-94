@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://c3bu5pkrdq3gm"]
 
 [ext_resource type="Script" uid="uid://cq4kygvueaqs" path="res://Scripts/Classes/fight_hud.gd" id="1_ygdfr"]
+[ext_resource type="Theme" uid="uid://haw8tfhwsl4v" path="res://default_theme.tres" id="2_afyqr"]
+[ext_resource type="PackedScene" uid="uid://c0rmbhmbnqg2w" path="res://UI/stat_list.tscn" id="3_0nuak"]
 
 [node name="FightHUD" type="Control" unique_id=1267984940 node_paths=PackedStringArray("player_health_bar", "enemy_health_bar")]
 top_level = true
@@ -21,9 +23,11 @@ offset_left = 16.0
 offset_top = 368.0
 offset_right = 144.0
 offset_bottom = 395.0
+theme = ExtResource("2_afyqr")
+theme_type_variation = &"HealthBar"
+value = 100.0
 allow_greater = true
 allow_lesser = true
-show_percentage = false
 
 [node name="EnemyCreatureHB" type="ProgressBar" parent="." unique_id=906565953]
 layout_mode = 0
@@ -31,6 +35,22 @@ offset_left = 576.0
 offset_top = 368.0
 offset_right = 704.0
 offset_bottom = 395.0
+theme = ExtResource("2_afyqr")
+theme_type_variation = &"HealthBar"
 allow_greater = true
 allow_lesser = true
-show_percentage = false
+
+[node name="PlayerStatList" parent="." unique_id=1523538723 instance=ExtResource("3_0nuak")]
+layout_mode = 0
+offset_right = 213.0
+offset_bottom = 56.0
+
+[node name="EnemyStatList" parent="." unique_id=669455205 instance=ExtResource("3_0nuak")]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -213.0
+offset_right = 0.0
+offset_bottom = 56.0
+grow_horizontal = 0

@@ -13,14 +13,13 @@ script = ExtResource("1_rkxg8")
 card_start_box = NodePath("CardStartBox")
 card_end_box = NodePath("CardEndBox")
 dna_spawn_point = NodePath("DNASpawnPoint")
-max_snapping_distance = 150.0
 start_button = NodePath("MarginContainer/StartButton")
 
 [node name="CardEndBox" type="ReferenceRect" parent="." unique_id=1895368688]
 layout_mode = 0
 offset_left = 17.0
 offset_top = 275.0
-offset_right = 384.0
+offset_right = 619.0
 offset_bottom = 385.0
 
 [node name="CardStartBox" type="ReferenceRect" parent="." unique_id=2030978737]
