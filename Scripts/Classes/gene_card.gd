@@ -21,20 +21,7 @@ const HOVER_SIZE : float = 1.05
 @export var card_type : GlobalNode.CARD_TYPE:
 	set(value):
 		card_type = value
-		if card_sprite != null:
-			match value:
-				GlobalNode.CARD_TYPE.A:
-					card_sprite.modulate = GlobalNode.A_CARD_COLOR
-					card_sprite.texture = A_CARD
-				GlobalNode.CARD_TYPE.C:
-					card_sprite.modulate = GlobalNode.C_CARD_COLOR
-					card_sprite.texture = C_CARD
-				GlobalNode.CARD_TYPE.G:
-					card_sprite.modulate = GlobalNode.G_CARD_COLOR
-					card_sprite.texture = G_CARD
-				_:
-					card_sprite.modulate = GlobalNode.T_CARD_COLOR
-					card_sprite.texture = T_CARD
+		_update_card_sprite()
 @export var icon : CompressedTexture2D:
 	set(value):
 		icon = value
@@ -42,6 +29,8 @@ const HOVER_SIZE : float = 1.05
 			icon_sprite.texture = value
 @export var card_title : String = "N/A"
 @export var card_desc : String = "N/A"
+
+var disabled : bool = false
 
 ## Whether or not the mouse is hovered over the card.
 var _is_mouse_hovered : bool = false
@@ -64,6 +53,8 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		info_box.hide()
 		info_box.set_information(card_type, card_title, card_desc)
+		if card_script:
+			card_script.on_card_disable.connect(disabled_state)
 
 func _process(delta: float) -> void:
 	if not Engine.is_editor_hint():
@@ -99,6 +90,31 @@ func _on_hitbox_mouse_exited() -> void:
 	top_level = false
 	scale_card(Vector2.ONE, 50.0)
 	info_box.hide()
+
+func _update_card_sprite() -> void:
+	if card_sprite != null:
+		if disabled:
+			card_sprite.modulate = Color(0.5, 0.5, 0.5, 1.0)
+		else:
+			match card_type:
+				GlobalNode.CARD_TYPE.A:
+					card_sprite.modulate = GlobalNode.A_CARD_COLOR
+					card_sprite.texture = A_CARD
+				GlobalNode.CARD_TYPE.C:
+					card_sprite.modulate = GlobalNode.C_CARD_COLOR
+					card_sprite.texture = C_CARD
+				GlobalNode.CARD_TYPE.G:
+					card_sprite.modulate = GlobalNode.G_CARD_COLOR
+					card_sprite.texture = G_CARD
+				_:
+					card_sprite.modulate = GlobalNode.T_CARD_COLOR
+					card_sprite.texture = T_CARD
+
+func disabled_state(is_disabled : bool) -> void:
+	print("test")
+	disabled = is_disabled
+	card_script.disabled = is_disabled
+	_update_card_sprite()
 
 func snap_to_position(pos : Vector2) -> void:
 	if _upside_down:

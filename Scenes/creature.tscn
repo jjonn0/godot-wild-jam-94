@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://3ilu2mnmmjj"]
+
+[ext_resource type="Script" uid="uid://conw1l06dxki4" path="res://Scripts/Classes/creature.gd" id="1_vbe5j"]
+[ext_resource type="SpriteFrames" uid="uid://bpq1rmjmm8e03" path="res://Assets/Sprite Sheets/Claw Scratch/Claw Scratch Frames.tres" id="2_01bph"]
+[ext_resource type="Script" uid="uid://4afh1uoiyv5k" path="res://Scripts/State Machine/Creature States/creature_state_machine.gd" id="3_kor7d"]
+[ext_resource type="Script" uid="uid://1l344xcmmxmn" path="res://Scripts/State Machine/Creature States/creature_attack_state.gd" id="4_ktm42"]
+[ext_resource type="Script" uid="uid://dssipi0mgnak" path="res://Scripts/State Machine/Creature States/creature_retreat_state.gd" id="5_idm37"]
+[ext_resource type="Script" uid="uid://lmqgv22e3fgx" path="res://Scripts/State Machine/Creature States/creature_windup_state.gd" id="6_kor7d"]
+
+[node name="Creature" type="Node2D" unique_id=1945268031 node_paths=PackedStringArray("creature_sprite", "attacked_sprite", "slide_target", "state_machine")]
+script = ExtResource("1_vbe5j")
+creature_sprite = NodePath("CreatureSprite")
+attacked_sprite = NodePath("AttackedSprite")
+slide_target = NodePath("SlideTarget")
+state_machine = NodePath("CreatureStateMachine")
+
+[node name="CreatureSprite" type="ColorRect" parent="." unique_id=847994584]
+offset_left = -36.0
+offset_top = -36.0
+offset_right = 36.0
+offset_bottom = 36.0
+
+[node name="AttackedSprite" type="AnimatedSprite2D" parent="." unique_id=429015924]
+sprite_frames = ExtResource("2_01bph")
+frame = 20
+frame_progress = 1.0
+
+[node name="CreatureStateMachine" type="Node" parent="." unique_id=1963877400 node_paths=PackedStringArray("creature", "starting_state")]
+script = ExtResource("3_kor7d")
+creature = NodePath("..")
+starting_state = NodePath("CreatureWindupState")
+metadata/_custom_type_script = "uid://bfqjdx1tdstsw"
+
+[node name="CreatureAttackState" type="Node" parent="CreatureStateMachine" unique_id=2129414750 node_paths=PackedStringArray("retreat_state")]
+script = ExtResource("4_ktm42")
+retreat_state = NodePath("../CreatureRetreatState")
+metadata/_custom_type_script = "uid://1l344xcmmxmn"
+
+[node name="CreatureRetreatState" type="Node" parent="CreatureStateMachine" unique_id=1236278784 node_paths=PackedStringArray("windup_state")]
+script = ExtResource("5_idm37")
+windup_state = NodePath("../CreatureWindupState")
+metadata/_custom_type_script = "uid://dssipi0mgnak"
+
+[node name="CreatureWindupState" type="Node" parent="CreatureStateMachine" unique_id=880167072 node_paths=PackedStringArray("creature_attack_state", "windup_timer")]
+script = ExtResource("6_kor7d")
+creature_attack_state = NodePath("../CreatureAttackState")
+windup_timer = NodePath("WindupTimer")
+metadata/_custom_type_script = "uid://lmqgv22e3fgx"
+
+[node name="WindupTimer" type="Timer" parent="CreatureStateMachine/CreatureWindupState" unique_id=1572064862]
+one_shot = true
+
+[node name="SlideTarget" type="Marker2D" parent="." unique_id=1667187666]
+position = Vector2(150, 0)

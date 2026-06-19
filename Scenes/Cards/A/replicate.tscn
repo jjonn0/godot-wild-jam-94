@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://clswe1wufxc80"]
+
+[ext_resource type="PackedScene" uid="uid://djo2v5a2mwa3q" path="res://Scenes/Cards/gene_card.tscn" id="1_qurko"]
+[ext_resource type="Texture2D" uid="uid://psxyhx2slj2h" path="res://Assets/Card Icons/DNA-Strand-Dice.png" id="2_f3w17"]
+[ext_resource type="Script" uid="uid://46fj6h1fjn4" path="res://Scripts/Card Scripts/effectless_script.gd" id="3_f3w17"]
+
+[node name="GeneCard" unique_id=1368041720 node_paths=PackedStringArray("card_script") instance=ExtResource("1_qurko")]
+card_script = NodePath("EffectlessScript")
+icon = ExtResource("2_f3w17")
+card_title = "Replicate"
+card_desc = "Choses a random card (excluding itself) ahead in the chain to run."
+
+[node name="Icon" parent="CardBacking" parent_id_path=PackedInt32Array(1585305667) index="0" unique_id=1952132238]
+texture = ExtResource("2_f3w17")
+
+[node name="EffectlessScript" type="Node" parent="." index="3" unique_id=1393324959]
+script = ExtResource("3_f3w17")
+metadata/_custom_type_script = "uid://46fj6h1fjn4"

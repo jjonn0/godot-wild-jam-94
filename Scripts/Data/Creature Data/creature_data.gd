@@ -35,4 +35,3 @@ func temporarily_modify(modifiers : Dictionary[String, Variant]) -> void:
 				current_attack_speed += val
 			_:
 				push_error("[%s]: Modifier value (%s) is not accepted for type \"%s\"" % [self, val, key])
-	print(current_health)

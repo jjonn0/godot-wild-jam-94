@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bycjsvr6mrype"]
+
+[ext_resource type="Script" uid="uid://b7kfwf4wgtoux" path="res://Scripts/transition_layer.gd" id="1_0f3qh"]
+
+[node name="TransitionLayer" type="CanvasLayer" unique_id=742799626 node_paths=PackedStringArray("static_overlay")]
+script = ExtResource("1_0f3qh")
+static_overlay = NodePath("StaticOverlay")
+
+[node name="StaticOverlay" type="ColorRect" parent="." unique_id=597388050]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)

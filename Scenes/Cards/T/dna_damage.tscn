@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://clkril4fcfjey"]
+
+[ext_resource type="PackedScene" uid="uid://djo2v5a2mwa3q" path="res://Scenes/Cards/gene_card.tscn" id="1_4itcd"]
+[ext_resource type="Texture2D" uid="uid://buf2pwe1cix1e" path="res://Assets/Card Icons/DNA-Strand-Broken.png" id="1_q8kk4"]
+[ext_resource type="Texture2D" uid="uid://cr647g6b8vnex" path="res://Assets/Card Backing/T-Card.png" id="2_4itcd"]
+[ext_resource type="Script" uid="uid://bqf7xx4qd3h1b" path="res://Scripts/Card Scripts/dna_damage_script.gd" id="4_7f1g8"]
+
+[node name="GeneCard" unique_id=1368041720 node_paths=PackedStringArray("card_script") instance=ExtResource("1_4itcd")]
+card_script = NodePath("DNADamageScript")
+card_type = 3
+icon = ExtResource("1_q8kk4")
+card_title = "DNA Damage"
+card_desc = "Chooses a random card (exlcuding itself) to disable."
+
+[node name="CardBacking" parent="." index="0" unique_id=1585305667]
+modulate = Color(0.604, 0.791, 0.99, 1)
+texture = ExtResource("2_4itcd")
+
+[node name="Icon" parent="CardBacking" index="0" unique_id=1952132238]
+texture = ExtResource("1_q8kk4")
+
+[node name="DNADamageScript" type="Node" parent="." index="3" unique_id=763315074]
+script = ExtResource("4_7f1g8")
+metadata/_custom_type_script = "uid://bqf7xx4qd3h1b"

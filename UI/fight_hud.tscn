@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://c3bu5pkrdq3gm"]
+
+[ext_resource type="Script" uid="uid://cq4kygvueaqs" path="res://Scripts/Classes/fight_hud.gd" id="1_ygdfr"]
+
+[node name="FightHUD" type="Control" unique_id=1267984940 node_paths=PackedStringArray("player_health_bar", "enemy_health_bar")]
+top_level = true
+z_index = 1023
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ygdfr")
+player_health_bar = NodePath("PlayerCreatureHB")
+enemy_health_bar = NodePath("EnemyCreatureHB")
+
+[node name="PlayerCreatureHB" type="ProgressBar" parent="." unique_id=1232884877]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 368.0
+offset_right = 144.0
+offset_bottom = 395.0
+allow_greater = true
+allow_lesser = true
+show_percentage = false
+
+[node name="EnemyCreatureHB" type="ProgressBar" parent="." unique_id=906565953]
+layout_mode = 0
+offset_left = 576.0
+offset_top = 368.0
+offset_right = 704.0
+offset_bottom = 395.0
+allow_greater = true
+allow_lesser = true
+show_percentage = false

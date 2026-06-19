@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cc45gcdd0dk33"]
 
-[ext_resource type="PackedScene" uid="uid://djo2v5a2mwa3q" path="res://Scenes/gene_card.tscn" id="1_dmpsi"]
+[ext_resource type="PackedScene" uid="uid://djo2v5a2mwa3q" path="res://Scenes/Cards/gene_card.tscn" id="1_dmpsi"]
 [ext_resource type="Texture2D" uid="uid://dxgfr8s84a47j" path="res://Assets/Card Icons/Syringe.png" id="2_kdpf0"]
 [ext_resource type="Texture2D" uid="uid://cr647g6b8vnex" path="res://Assets/Card Backing/T-Card.png" id="3_hq5se"]
 [ext_resource type="Script" uid="uid://c55e5kpdmpb7d" path="res://Scripts/Card Scripts/transfusion_script.gd" id="4_ym1lu"]

@@ -1,19 +1,35 @@
 [gd_scene format=3 uid="uid://b6vwqni358t1t"]
 
 [ext_resource type="Script" uid="uid://xvpxrda51bh0" path="res://Scripts/Classes/card_manager.gd" id="1_bo1nx"]
-[ext_resource type="PackedScene" uid="uid://ckumx0euj54hi" path="res://UI/gene_editor.tscn" id="1_jjgbg"]
 [ext_resource type="Script" uid="uid://dni22hpcnq68q" path="res://Scripts/Managers/music_manager.gd" id="2_8gbba"]
+[ext_resource type="Script" uid="uid://bqot5qn0jxwy5" path="res://Scripts/transition_manager.gd" id="3_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://bycjsvr6mrype" path="res://Scenes/transition_layer.tscn" id="5_kry3j"]
 
 [node name="Main" type="Node" unique_id=592642617]
 
-[node name="Managers" type="Node" parent="." unique_id=1318984044]
-
-[node name="CardManager" type="Node" parent="Managers" unique_id=390825681]
-script = ExtResource("1_bo1nx")
-card_directory_path = &"res://Scenes/Cards/"
-
-[node name="MusicManager" type="AudioStreamPlayer" parent="Managers" unique_id=944630757]
+[node name="MusicManager" type="AudioStreamPlayer" parent="." unique_id=944630757]
 bus = &"Music"
 script = ExtResource("2_8gbba")
 
-[node name="GeneEditor" parent="." unique_id=1053353092 instance=ExtResource("1_jjgbg")]
+[node name="CardManager" type="Node" parent="." unique_id=390825681]
+script = ExtResource("1_bo1nx")
+card_directory_path = &"res://Scenes/Cards/"
+
+[node name="TransitionManager" type="Node" parent="." unique_id=138938720 node_paths=PackedStringArray("gui_root", "world_2d_root", "transition_layer")]
+script = ExtResource("3_jjvhh")
+gui_root = NodePath("GUI")
+world_2d_root = NodePath("World2D")
+transition_layer = NodePath("TransitionLayer")
+
+[node name="World2D" type="Node2D" parent="TransitionManager" unique_id=633476542]
+
+[node name="GUI" type="Control" parent="TransitionManager" unique_id=1588864933]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TransitionLayer" parent="TransitionManager" unique_id=742799626 instance=ExtResource("5_kry3j")]
+layer = 10

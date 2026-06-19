@@ -1,10 +1,12 @@
 [gd_scene format=3 uid="uid://ucnwebqyefw3"]
 
-[ext_resource type="PackedScene" uid="uid://djo2v5a2mwa3q" path="res://Scenes/gene_card.tscn" id="1_bxl88"]
+[ext_resource type="PackedScene" uid="uid://djo2v5a2mwa3q" path="res://Scenes/Cards/gene_card.tscn" id="1_bxl88"]
 [ext_resource type="Texture2D" uid="uid://cjbyd5qb4g0fn" path="res://Assets/Card Icons/Cancel.png" id="2_e1maq"]
 [ext_resource type="Texture2D" uid="uid://dodh3fsp3u4ej" path="res://Assets/Card Backing/G-Card.png" id="2_rssw3"]
+[ext_resource type="Script" uid="uid://46fj6h1fjn4" path="res://Scripts/Card Scripts/effectless_script.gd" id="4_4ka6d"]
 
-[node name="GeneCard" unique_id=1368041720 instance=ExtResource("1_bxl88")]
+[node name="GeneCard" unique_id=1368041720 node_paths=PackedStringArray("card_script") instance=ExtResource("1_bxl88")]
+card_script = NodePath("EffectlessScript")
 card_type = 2
 card_title = "Effectless"
 card_desc = "This card has no effect."
@@ -15,3 +17,7 @@ texture = ExtResource("2_rssw3")
 
 [node name="Icon" parent="CardBacking" index="0" unique_id=1952132238]
 texture = ExtResource("2_e1maq")
+
+[node name="EffectlessScript" type="Node" parent="." index="3" unique_id=308519841]
+script = ExtResource("4_4ka6d")
+metadata/_custom_type_script = "uid://46fj6h1fjn4"

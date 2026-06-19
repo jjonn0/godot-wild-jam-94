@@ -25,6 +25,7 @@ var _strand_full : bool = false
 var _awaiting_transition : bool = false
 
 func _ready() -> void:
+	GlobalNode.game_data.reset_stats()
 	spawn_cards()
 	_dna_strand_ref = DNAStrand.new()
 	add_child(_dna_strand_ref)
@@ -135,4 +136,3 @@ func _on_start_button_pressed() -> void:
 	dna_arrow.cards = cards
 	add_child(dna_arrow)
 	dna_arrow.start_animation()
-	

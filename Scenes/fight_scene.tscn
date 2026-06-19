@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://cc5lckj6ohdwe"]
+
+[ext_resource type="Script" uid="uid://l1x0nqr66244" path="res://Scripts/fight_scene.gd" id="1_x4t7m"]
+
+[sub_resource type="Curve2D" id="Curve2D_l3x7y"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -128, 256, 0, 0, 0, 0, 128, 256)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_x4t7m"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 848, 256, 0, 0, 0, 0, 592, 256)
+}
+point_count = 2
+
+[node name="FightScene" type="Node2D" unique_id=817179794 node_paths=PackedStringArray("player_creature_follow", "enemy_creature_follow")]
+script = ExtResource("1_x4t7m")
+player_creature_follow = NodePath("PlayerCreatureEntrance/PlayerCreatureFollow")
+enemy_creature_follow = NodePath("EnemyCreatureEntrance/EnemyCreatureFollow")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2095379251]
+offset_top = 288.0
+offset_right = 39.999996
+offset_bottom = 327.0
+scale = Vector2(18.000002, 2.9999988)
+color = Color(0, 0, 0, 1)
+
+[node name="PlayerCreatureEntrance" type="Path2D" parent="." unique_id=561967480]
+curve = SubResource("Curve2D_l3x7y")
+
+[node name="PlayerCreatureFollow" type="PathFollow2D" parent="PlayerCreatureEntrance" unique_id=249693089]
+position = Vector2(-128, 256)
+rotates = false
+cubic_interp = false
+loop = false
+
+[node name="EnemyCreatureEntrance" type="Path2D" parent="." unique_id=608965236]
+curve = SubResource("Curve2D_x4t7m")
+
+[node name="EnemyCreatureFollow" type="PathFollow2D" parent="EnemyCreatureEntrance" unique_id=1006241450]
+position = Vector2(848, 256)
+rotates = false
+cubic_interp = false
+loop = false
+
+[node name="WinDecideWindup" type="Timer" parent="." unique_id=694861010]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="timeout" from="WinDecideWindup" to="." method="_on_win_decide_windup_timeout"]
