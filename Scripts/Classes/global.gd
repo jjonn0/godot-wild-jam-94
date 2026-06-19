@@ -18,6 +18,7 @@ var card_manager : CardManager
 var dna_cards : Array[GeneCard] = []
 var music_manager : MusicManager
 var transition_manager: TransitionManager
+var gene_editor : Control
 #endregion
 
 var game_data : GameData = GameData.new()

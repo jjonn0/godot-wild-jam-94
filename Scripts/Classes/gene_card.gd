@@ -111,7 +111,6 @@ func _update_card_sprite() -> void:
 					card_sprite.texture = T_CARD
 
 func disabled_state(is_disabled : bool) -> void:
-	print("test")
 	disabled = is_disabled
 	card_script.disabled = is_disabled
 	_update_card_sprite()

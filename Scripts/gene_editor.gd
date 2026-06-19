@@ -13,6 +13,7 @@ const DNA_ARROW = preload("uid://dle3cxu2w2cy1")
 var _snapped_cards : Array[GeneCard] = []
 ## An array containing every unsnapped gene card. Used for moving cards back to the right place.
 var _unsnapped_cards : Array[GeneCard] = []
+var _dna_arrow : Sprite2D
 
 # Card holding/snapping
 var _held_card : GeneCard
@@ -24,15 +25,24 @@ var _can_snap_card : bool = false
 var _strand_full : bool = false
 var _awaiting_transition : bool = false
 
-func _ready() -> void:
+## Called everytime the node enters the tree
+func _enter_tree() -> void:
 	GlobalNode.game_data.reset_stats()
 	spawn_cards()
-	_dna_strand_ref = DNAStrand.new()
-	add_child(_dna_strand_ref)
-	_dna_strand_ref.global_position = dna_spawn_point.global_position - _dna_strand_ref.left_point.global_position
 	GlobalNode.music_manager.play_gene_editor_music()
 	_strand_full = check_if_strand_is_full()
 	start_button.disabled = !_strand_full
+	
+	if _awaiting_transition:
+		_awaiting_transition = false
+	if _dna_arrow:
+		_dna_arrow.queue_free()
+
+## Called only once when the node enters the tree.
+func _ready() -> void:
+	_dna_strand_ref = DNAStrand.new()
+	add_child(_dna_strand_ref)
+	_dna_strand_ref.global_position = dna_spawn_point.global_position - _dna_strand_ref.left_point.global_position
 
 func _draw() -> void:
 	if _closest_site_ref and _can_snap_card and _held_card:
@@ -129,10 +139,11 @@ func _on_start_button_pressed() -> void:
 	var result : Array[CardScript] = new_executioner.get_result()
 	var cards : Array[GeneCard] = []
 	for script in result:
-		for card in _snapped_cards:
+		for card in GlobalNode.dna_cards:
 			if card.card_script == script:
 				cards.append(card)
-	var dna_arrow : Sprite2D = DNA_ARROW.instantiate()
-	dna_arrow.cards = cards
-	add_child(dna_arrow)
-	dna_arrow.start_animation()
+	_dna_arrow = DNA_ARROW.instantiate()
+	_dna_arrow.cards = cards
+	add_child(_dna_arrow)
+	_dna_arrow.start_animation()
+	GlobalNode.gene_editor = self
